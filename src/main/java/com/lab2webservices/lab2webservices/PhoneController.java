@@ -1,42 +1,20 @@
 package com.lab2webservices.lab2webservices;
 
-//import lombok.extern.slf4j.Slf4j;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.hateoas.CollectionModel;
-//import org.springframework.hateoas.EntityModel;
-//import org.springframework.hateoas.RepresentationModel;
 
-import org.apache.coyote.Response;
+
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-//import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-//import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RequestMapping("/api/v1/phones")
 @RestController
 public class PhoneController {
-
-//    private List<Phone> phoneList = Collections.synchronizedList(new ArrayList<>());
-//
-//    private static final String template = "Hello, %s!";
-//    private final AtomicLong counter = new AtomicLong();
-//
-//    @GetMapping("/greeting")
-//    public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-//        return new Greeting(counter.incrementAndGet(), String.format(template, name));
-//    }
 
     private final PhoneDataModelAssembler phoneDataModelAssembler;
     private PhoneRepository repository;
@@ -45,6 +23,7 @@ public class PhoneController {
         this.repository = repository;
         this.phoneDataModelAssembler = phoneDataModelAssembler;
     }
+
 
     @GetMapping
     public CollectionModel<EntityModel<Phone>> all() {
@@ -68,6 +47,7 @@ public class PhoneController {
     }
 
 
+
     @GetMapping(value = "/brand/{brandId}")
     public Optional<Phone> one(@PathVariable int brandId) {
         return repository.findById((long) brandId);
@@ -77,10 +57,6 @@ public class PhoneController {
     ResponseEntity<Phone> newPhone(@RequestBody Phone phone) {
         if (repository.existsPhoneByPhoneName(phone.getPhoneName()))
             return new ResponseEntity<>(HttpStatus.CONFLICT);
-//        if(repository.findByPhoneName(phone.getPhoneName()).equals(phone.getPhoneName())) {
-//            System.out.println("phone already exists");
-//        }
-
         repository.save(phone);
         var entityModelResponseEntity = repository.findById(phone.getId())
                 .map(phoneDataModelAssembler::toModel);
