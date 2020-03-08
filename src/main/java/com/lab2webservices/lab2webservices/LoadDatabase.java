@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Configuration;
 class LoadDatabase {
 
     @Bean
-    CommandLineRunner initDatabase(PhoneRepository phoneRepo) {
+    CommandLineRunner initDatabase(CarRepository carRepo) {
         return args -> {
-            phoneRepo.save(new Phone(0L, "Iphone X", 1));
-            phoneRepo.save(new Phone(0L, "Samsung Galaxy S10", 2));
+            carRepo.save(new Car(0L, "Audi A6", 1));
+            carRepo.save(new Car(0L, "Mercedes SL", 2));
         };
     }
 }
